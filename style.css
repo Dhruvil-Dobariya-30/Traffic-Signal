@@ -1,0 +1,60 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  width: 100vw;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+.controls {
+  background-color: #f8f8f8;
+  padding: 20px;
+}
+
+.allSignals {
+  display: flex;
+  width: 100%;
+  justify-content: space-around;
+  margin: 30px 0;
+}
+
+.allSignals div {
+  background-color: #000;
+  width: 150px;
+  padding: 30px 10px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+}
+
+.allSignals .timer {
+  width: 80px;
+  height: 80px;
+}
+
+.allSignals .redLight {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  background-color: red;
+}
+.allSignals .yellowLight {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  background-color: yellow;
+}
+.allSignals .greenLight {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  background-color: green;
+}

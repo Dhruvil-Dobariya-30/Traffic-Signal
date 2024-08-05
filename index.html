@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="style.css" />
+    <title>Traffic Signal</title>
+  </head>
+  <body>
+    <input type="number" name="total time" id="totalSecond" />
+    <button onclick="getTotalSeconds()">Get</button>
+
+    <div class="controls">
+      <input
+        type="number"
+        id="signal-1"
+        class="signals"
+        onchange="manageChanges(this.id)"
+      />
+
+      <input
+        type="number"
+        id="signal-2"
+        class="signals"
+        onchange="manageChanges(this.id)"
+      />
+
+      <input
+        type="number"
+        id="signal-3"
+        class="signals"
+        onchange="manageChanges(this.id)"
+      />
+
+      <input
+        type="number"
+        id="signal-4"
+        class="signals"
+        onchange="manageChanges(this.id)"
+      />
+    </div>
+
+    <div class="allSignals">
+      <div class="signal1">
+        <input type="number" class="timer" id="timer1" />
+        <div class="redLight"></div>
+        <div class="yellowLight"></div>
+        <div class="greenLight"></div>
+      </div>
+
+      <div class="signal2">
+        <input type="number" class="timer" />
+        <div class="redLight"></div>
+        <div class="yellowLight"></div>
+        <div class="greenLight"></div>
+      </div>
+
+      <div class="signal3">
+        <input type="number" class="timer" />
+        <div class="redLight"></div>
+        <div class="yellowLight"></div>
+        <div class="greenLight"></div>
+      </div>
+
+      <div class="signal4">
+        <input type="number" class="timer" />
+        <div class="redLight"></div>
+        <div class="yellowLight"></div>
+        <div class="greenLight"></div>
+      </div>
+    </div>
+
+    <script src="./index.js"></script>
+    <script src="./data.js"></script>
+  </body>
+</html>
