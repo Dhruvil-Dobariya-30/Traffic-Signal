@@ -47,6 +47,10 @@ function manageChanges(id) {
 
 function startTimer(pr) {
   let timerDiv = document.getElementById("timer1");
+  let sec = (timerDiv.value = (totalSecond.value * pr) / 100);
 
-  timerDiv.value = (totalSecond.value * pr) / 100;
+  setInterval(() => {
+    document.getElementById("timer1").innerHTML = sec--;
+    console.log(sec--);
+  }, 1000);
 }
