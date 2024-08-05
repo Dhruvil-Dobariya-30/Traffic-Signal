@@ -15,10 +15,6 @@ function getTotalSeconds() {
 }
 
 function divideSeconds() {
-  let totalSeconds = totalSecond.value;
-
-  let dividesSeconds = totalSeconds / 4;
-
   let allSignals = document.querySelectorAll(".signals");
   for (let i of allSignals) {
     i.value = 25;
@@ -35,22 +31,33 @@ function manageChanges(id) {
   let remainingSeconds = 100 - changedValue;
   console.log("remaining ", remainingSeconds);
 
-  let aa = storeID.filter((div) => div != id);
-  console.log(aa);
+  let remainingInputs = storeID.filter((div) => div != id);
+  console.log(remainingInputs);
 
-  for (let i of aa) {
-    document.getElementById(i).value = (remainingSeconds / aa.length).toFixed(
-      3
-    );
+  for (let i of remainingInputs) {
+    document.getElementById(i).value = (
+      remainingSeconds / remainingInputs.length
+    ).toFixed(3);
   }
 }
 
-function startTimer(pr) {
-  let timerDiv = document.getElementById("timer1");
-  let sec = (timerDiv.value = (totalSecond.value * pr) / 100);
+function startTimer() {
+  storeID.forEach((id, index) => {
+    let input = document.getElementById(id);
+    let percentage = parseFloat(input.value);
+    let totalSeconds = parseFloat(totalSecond.value);
+    let signalTime = (totalSeconds * percentage) / 100;
 
-  setInterval(() => {
-    document.getElementById("timer1").innerHTML = sec--;
-    console.log(sec--);
-  }, 1000);
+    let timerDiv = document.querySelector(".timer");
+
+    timerDiv.innerHTML = signalTime;
+    setInterval(() => {
+      if (signalTime <= 0) {
+        timerDiv.innerHTML = 0;
+      } else {
+        signalTime--;
+        timerDiv.innerHTML = signalTime;
+      }
+    }, 1000);
+  });
 }

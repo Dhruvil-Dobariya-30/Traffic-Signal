@@ -36,8 +36,12 @@ body {
 }
 
 .allSignals .timer {
+  color: black;
+  background-color: white;
   width: 80px;
   height: 80px;
+  font-size: 30px;
+  font-weight: 900;
 }
 
 .allSignals .redLight {
