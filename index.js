@@ -4,6 +4,8 @@ let signal_2_Input = document.getElementById("signal-2");
 let signal_3_Input = document.getElementById("signal-3");
 let signal_4_Input = document.getElementById("signal-4");
 
+let currentIntervals = [];
+
 function changeSettings() {
   let totalSecond_Value = Number(totalSecond.value);
   let signal_1_Value = Number(signal_1_Input.value);
@@ -12,20 +14,22 @@ function changeSettings() {
   let signal_4_Value = Number(signal_4_Input.value);
 
   if (
-    totalSecond_Value == "" ||
-    signal_1_Value == "" ||
-    signal_2_Value == "" ||
-    signal_3_Value == "" ||
-    signal_4_Value == ""
+    totalSecond_Value === "" ||
+    signal_1_Value === "" ||
+    signal_2_Value === "" ||
+    signal_3_Value === "" ||
+    signal_4_Value === ""
   ) {
+    s;
     alert("Enter All Values");
   } else {
     if (
-      signal_1_Value + signal_2_Value + signal_3_Value + signal_4_Value !=
+      signal_1_Value + signal_2_Value + signal_3_Value + signal_4_Value !==
       100
     ) {
       alert("All 4 fields value must be equal to 100%");
     } else {
+      clearAllIntervals();
       startTimer(
         signal_1_Value,
         signal_2_Value,
@@ -42,7 +46,6 @@ function startTimer(value1, value2, value3, value4) {
   document
     .querySelectorAll(".yellowLight")
     .forEach((data) => data.classList.remove("yellow"));
-
   document
     .querySelectorAll(".redLight")
     .forEach((data) => data.classList.add("red"));
@@ -69,6 +72,8 @@ function startTimer(value1, value2, value3, value4) {
         timerDiv.innerHTML = timing;
       }
     }, 1000);
+
+    currentIntervals.push(interval1);
   }
 
   function signal_2_Timer() {
@@ -93,6 +98,8 @@ function startTimer(value1, value2, value3, value4) {
         timerDiv.innerHTML = timing;
       }
     }, 1000);
+
+    currentIntervals.push(interval);
   }
 
   function signal_3_Timer() {
@@ -117,6 +124,8 @@ function startTimer(value1, value2, value3, value4) {
         timerDiv.innerHTML = timing;
       }
     }, 1000);
+
+    currentIntervals.push(interval);
   }
 
   function signal_4_Timer() {
@@ -141,7 +150,10 @@ function startTimer(value1, value2, value3, value4) {
         timerDiv.innerHTML = timing;
       }
     }, 1000);
+
+    currentIntervals.push(interval);
   }
+
   signal_1_Timer();
 }
 
@@ -152,7 +164,7 @@ function restartTimer(id, Values) {
   timerDiv.style.color = "red";
 
   let interval = setInterval(() => {
-    if (count == 0) {
+    if (count === 0) {
       clearInterval(interval);
       timerDiv.style.color = "green";
     } else {
@@ -160,4 +172,11 @@ function restartTimer(id, Values) {
       timerDiv.innerHTML = count;
     }
   }, 1000);
+
+  currentIntervals.push(interval);
+}
+
+function clearAllIntervals() {
+  currentIntervals.forEach(clearInterval);
+  currentIntervals = [];
 }
