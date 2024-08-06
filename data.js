@@ -1,19 +1,23 @@
 const priorities = [
   {
     id: 0,
-    priority: 25,
+    start: "08:35",
+    end: "08:40",
   },
   {
     id: 1,
-    priority: 20,
+    start: "08:35",
+    end: "08:40",
   },
   {
     id: 3,
-    priority: 20,
+    start: "08:35",
+    end: "08:40",
   },
   {
     id: 4,
-    priority: 10,
+    start: "08:35",
+    end: "08:40",
   },
 ];
 

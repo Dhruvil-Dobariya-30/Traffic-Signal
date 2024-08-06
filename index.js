@@ -1,63 +1,163 @@
 let totalSecond = document.getElementById("totalSecond");
-let signal_1_Value = document.getElementById("signal-1");
-let signal_2_Value = document.getElementById("signal-2");
-let signal_3_Value = document.getElementById("signal-3");
-let signal_4_Value = document.getElementById("signal-4");
-let storeID = ["signal-1", "signal-2", "signal-3", "signal-4"];
+let signal_1_Input = document.getElementById("signal-1");
+let signal_2_Input = document.getElementById("signal-2");
+let signal_3_Input = document.getElementById("signal-3");
+let signal_4_Input = document.getElementById("signal-4");
 
-function getTotalSeconds() {
-  if (totalSecond.value < 0) {
-    console.log("Invalid Timing");
+function changeSettings() {
+  let totalSecond_Value = Number(totalSecond.value);
+  let signal_1_Value = Number(signal_1_Input.value);
+  let signal_2_Value = Number(signal_2_Input.value);
+  let signal_3_Value = Number(signal_3_Input.value);
+  let signal_4_Value = Number(signal_4_Input.value);
+
+  if (
+    totalSecond_Value == "" ||
+    signal_1_Value == "" ||
+    signal_2_Value == "" ||
+    signal_3_Value == "" ||
+    signal_4_Value == ""
+  ) {
+    alert("Enter All Values");
   } else {
-    console.log("total sec :", totalSecond.value);
-    divideSeconds();
+    if (
+      signal_1_Value + signal_2_Value + signal_3_Value + signal_4_Value !=
+      100
+    ) {
+      alert("All 4 fields value must be equal to 100%");
+    } else {
+      startTimer(
+        signal_1_Value,
+        signal_2_Value,
+        signal_3_Value,
+        signal_4_Value
+      );
+    }
   }
 }
 
-function divideSeconds() {
-  let allSignals = document.querySelectorAll(".signals");
-  for (let i of allSignals) {
-    i.value = 25;
-    console.log(i.id, (i.value = 25), "%");
-    startTimer(i.value);
-  }
-}
+function startTimer(value1, value2, value3, value4) {
+  let totalSec = totalSecond.value;
 
-function manageChanges(id) {
-  let changedInput = document.getElementById(id);
-  let changedValue = changedInput.value;
-  console.log("changedValue", changedValue);
+  document
+    .querySelectorAll(".yellowLight")
+    .forEach((data) => data.classList.remove("yellow"));
 
-  let remainingSeconds = 100 - changedValue;
-  console.log("remaining ", remainingSeconds);
+  document
+    .querySelectorAll(".redLight")
+    .forEach((data) => data.classList.add("red"));
 
-  let remainingInputs = storeID.filter((div) => div != id);
-  console.log(remainingInputs);
+  function signal_1_Timer() {
+    let timerDiv = document.querySelector(".timer1");
+    let timing = Math.round((totalSec * value1) / 100);
 
-  for (let i of remainingInputs) {
-    document.getElementById(i).value = (
-      remainingSeconds / remainingInputs.length
-    ).toFixed(3);
-  }
-}
+    timerDiv.innerHTML = timing;
+    document.getElementById("greenLight1").classList.add("green");
+    document.getElementById("redLight1").classList.remove("red");
 
-function startTimer() {
-  storeID.forEach((id, index) => {
-    let input = document.getElementById(id);
-    let percentage = parseFloat(input.value);
-    let totalSeconds = parseFloat(totalSecond.value);
-    let signalTime = (totalSeconds * percentage) / 100;
-
-    let timerDiv = document.querySelector(".timer");
-
-    timerDiv.innerHTML = signalTime;
-    setInterval(() => {
-      if (signalTime <= 0) {
+    let interval1 = setInterval(() => {
+      if (timing <= 0) {
+        clearInterval(interval1);
         timerDiv.innerHTML = 0;
+        signal_2_Timer();
+        restartTimer(".timer1", value2 + value3 + value4);
+
+        document.getElementById("greenLight1").classList.remove("green");
+        document.getElementById("redLight1").classList.add("red");
       } else {
-        signalTime--;
-        timerDiv.innerHTML = signalTime;
+        timing--;
+        timerDiv.innerHTML = timing;
       }
     }, 1000);
-  });
+  }
+
+  function signal_2_Timer() {
+    let timerDiv = document.querySelector(".timer2");
+    let timing = Math.round((totalSec * value2) / 100);
+
+    timerDiv.innerHTML = timing;
+    document.getElementById("greenLight2").classList.add("green");
+    document.getElementById("redLight2").classList.remove("red");
+
+    let interval = setInterval(() => {
+      if (timing <= 0) {
+        clearInterval(interval);
+        timerDiv.innerHTML = 0;
+        signal_3_Timer();
+        restartTimer(".timer2", value1 + value3 + value4);
+
+        document.getElementById("greenLight2").classList.remove("green");
+        document.getElementById("redLight2").classList.add("red");
+      } else {
+        timing--;
+        timerDiv.innerHTML = timing;
+      }
+    }, 1000);
+  }
+
+  function signal_3_Timer() {
+    let timerDiv = document.querySelector(".timer3");
+    let timing = Math.round((totalSec * value3) / 100);
+
+    timerDiv.innerHTML = timing;
+    document.getElementById("greenLight3").classList.add("green");
+    document.getElementById("redLight3").classList.remove("red");
+
+    let interval = setInterval(() => {
+      if (timing <= 0) {
+        clearInterval(interval);
+        timerDiv.innerHTML = 0;
+        signal_4_Timer();
+        restartTimer(".timer3", value1 + value2 + value4);
+
+        document.getElementById("greenLight3").classList.remove("green");
+        document.getElementById("redLight3").classList.add("red");
+      } else {
+        timing--;
+        timerDiv.innerHTML = timing;
+      }
+    }, 1000);
+  }
+
+  function signal_4_Timer() {
+    let timerDiv = document.querySelector(".timer4");
+    let timing = Math.round((totalSec * value4) / 100);
+
+    timerDiv.innerHTML = timing;
+    document.getElementById("greenLight4").classList.add("green");
+    document.getElementById("redLight4").classList.remove("red");
+
+    let interval = setInterval(() => {
+      if (timing <= 0) {
+        clearInterval(interval);
+        timerDiv.innerHTML = 0;
+        signal_1_Timer();
+        restartTimer(".timer4", value1 + value2 + value3);
+
+        document.getElementById("greenLight4").classList.remove("green");
+        document.getElementById("redLight4").classList.add("red");
+      } else {
+        timing--;
+        timerDiv.innerHTML = timing;
+      }
+    }, 1000);
+  }
+  signal_1_Timer();
+}
+
+function restartTimer(id, Values) {
+  let totalSecond_Value = Number(totalSecond.value);
+  let timerDiv = document.querySelector(id);
+  let count = Math.round((totalSecond_Value * Values) / 100) + 2;
+  timerDiv.style.color = "red";
+
+  let interval = setInterval(() => {
+    if (count == 0) {
+      clearInterval(interval);
+      timerDiv.style.color = "green";
+    } else {
+      count--;
+      timerDiv.innerHTML = count;
+    }
+  }, 1000);
 }

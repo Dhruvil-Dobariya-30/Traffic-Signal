@@ -10,6 +10,7 @@ body {
   justify-content: center;
   align-items: center;
   flex-direction: column;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
 }
 
 .controls {
@@ -35,8 +36,11 @@ body {
   gap: 20px;
 }
 
-.allSignals .timer {
-  color: black;
+.allSignals .timer1,
+.allSignals .timer2,
+.allSignals .timer3,
+.allSignals .timer4 {
+  color: green;
   background-color: white;
   width: 80px;
   height: 80px;
@@ -48,17 +52,48 @@ body {
   width: 100px;
   height: 100px;
   border-radius: 50%;
-  background-color: red;
+  background-color: #3a0000;
 }
 .allSignals .yellowLight {
   width: 100px;
   height: 100px;
   border-radius: 50%;
-  background-color: yellow;
+  background-color: #363600;
 }
 .allSignals .greenLight {
   width: 100px;
   height: 100px;
   border-radius: 50%;
-  background-color: green;
+  background-color: #002d00;
+}
+
+.allSignals .title {
+  color: white;
+  font-size: 25px;
+  font-weight: 600;
+  padding: 3px 0 0px 0;
+}
+
+.green {
+  background: #0e990e !important;
+  box-shadow: 15px 14px 150px 20px #12b612cc;
+  /* animation: Blink 1s linear infinite; */
+}
+
+.red {
+  background-color: red !important;
+  box-shadow: 15px 14px 50px 5px #c20903cc;
+  animation: Blink 1s linear infinite;
+}
+
+.yellow {
+  background-color: #cccc13 !important;
+  box-shadow: 15px 14px 90px 5px #958600cc;
+  animation: Blink 2s linear infinite;
+}
+
+@keyframes Blink {
+  50% {
+    opacity: 0.5;
+  }
 }

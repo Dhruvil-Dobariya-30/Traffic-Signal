@@ -7,66 +7,77 @@
     <title>Traffic Signal</title>
   </head>
   <body>
-    <input type="number" name="total time" id="totalSecond" />
-    <button onclick="getTotalSeconds()">Get</button>
+    <div>
+      <input type="number" name="total time" id="totalSecond" required />
+    </div>
 
     <div class="controls">
       <input
-        type="number"
+        type="text"
         id="signal-1"
         class="signals"
-        onchange="manageChanges(this.id)"
+        value="25"
+        inputmode="numeric"
+        required
       />
-
       <input
-        type="number"
+        type="text"
         id="signal-2"
         class="signals"
-        onchange="manageChanges(this.id)"
+        value="25"
+        inputmode="numeric"
+        required
       />
-
       <input
-        type="number"
+        type="text"
         id="signal-3"
         class="signals"
-        onchange="manageChanges(this.id)"
+        value="25"
+        inputmode="numeric"
+        required
       />
-
       <input
-        type="number"
+        type="text"
         id="signal-4"
         class="signals"
-        onchange="manageChanges(this.id)"
+        value="25"
+        inputmode="numeric"
+        required
       />
+      <button onclick="changeSettings()">Change</button>
     </div>
 
     <div class="allSignals">
       <div class="signal1">
-        <div class="timer">0</div>
-        <div class="redLight"></div>
-        <div class="yellowLight"></div>
-        <div class="greenLight"></div>
+        <div class="timer1">0</div>
+        <div class="redLight" id="redLight1"></div>
+        <div class="yellowLight yellow" id="yellowLight1"></div>
+        <div class="greenLight" id="greenLight1"></div>
+        <div class="title">Left</div>
       </div>
 
       <div class="signal2">
-        <div class="timer">0</div>
-        <div class="redLight"></div>
-        <div class="yellowLight"></div>
-        <div class="greenLight"></div>
+        <div class="timer2">0</div>
+        <div class="redLight" id="redLight2"></div>
+        <div class="yellowLight yellow" id="yellowLight2"></div>
+        <div class="greenLight" id="greenLight2"></div>
+        <div class="title">Up</div>
       </div>
 
       <div class="signal3">
-        <div class="timer">0</div>
-        <div class="redLight"></div>
-        <div class="yellowLight"></div>
-        <div class="greenLight"></div>
+        <div class="timer3">0</div>
+        <div class="redLight" id="redLight3"></div>
+        <div class="yellowLight yellow" id="yellowLight3"></div>
+        <div class="greenLight" id="greenLight3"></div>
+        <div class="title">Right</div>
       </div>
 
       <div class="signal4">
-        <div class="timer">0</div>
-        <div class="redLight"></div>
-        <div class="yellowLight"></div>
-        <div class="greenLight"></div>
+        <div class="timer4">0</div>
+        <div class="redLight" id="redLight4"></div>
+        <div class="yellowLight yellow" id="yellowLight4"></div>
+        <div class="greenLight" id="greenLight4"></div>
+        <div class="title">Down</div>
       </div>
     </div>
 
