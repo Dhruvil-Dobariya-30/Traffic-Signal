@@ -52,7 +52,12 @@ function startTimer(value1, value2, value3, value4) {
 
   function signal_1_Timer() {
     let timerDiv = document.querySelector(".timer1");
+    let secondDiv = document.querySelector(".timer2");
+    let thirdDiv = document.querySelector(".timer3");
+    let fourthDiv = document.querySelector(".timer4");
     let timing = Math.round((totalSec * value1) / 100);
+    let timing3 = Math.round((totalSec * (value1 + value2)) / 100) + 1;
+    let timing4 = Math.round((totalSec * (value1 + value2 + value3)) / 100) + 2;
 
     timerDiv.innerHTML = timing;
     document.getElementById("greenLight1").classList.add("green");
@@ -64,20 +69,42 @@ function startTimer(value1, value2, value3, value4) {
         timerDiv.innerHTML = 0;
         signal_2_Timer();
         restartTimer(".timer1", value2 + value3 + value4);
-
         document.getElementById("greenLight1").classList.remove("green");
         document.getElementById("redLight1").classList.add("red");
       } else {
         timing--;
         timerDiv.innerHTML = timing;
+        secondDiv.innerHTML = timing;
+        secondDiv.style.color = "red";
       }
     }, 1000);
 
-    currentIntervals.push(interval1);
+    let thirdInterval = setInterval(() => {
+      if (timing3 <= 0) {
+        timing3 = 0;
+      } else {
+        timing3--;
+        thirdDiv.innerHTML = timing3;
+        thirdDiv.style.color = "red";
+      }
+    }, 1000);
+
+    let fourthInterval = setInterval(() => {
+      if (timing4 <= 0) {
+        timing4 = 0;
+      } else {
+        timing4--;
+        fourthDiv.innerHTML = timing4;
+        fourthDiv.style.color = "red";
+      }
+    }, 1000);
+
+    currentIntervals.push(interval1, thirdInterval, fourthInterval);
   }
 
   function signal_2_Timer() {
     let timerDiv = document.querySelector(".timer2");
+
     let timing = Math.round((totalSec * value2) / 100);
 
     timerDiv.innerHTML = timing;
@@ -98,7 +125,6 @@ function startTimer(value1, value2, value3, value4) {
         timerDiv.innerHTML = timing;
       }
     }, 1000);
-
     currentIntervals.push(interval);
   }
 
@@ -157,6 +183,16 @@ function startTimer(value1, value2, value3, value4) {
   signal_1_Timer();
 }
 
+function thirdTimer(total, v1, v2, v3, v4) {
+  let timing = Math.round((total * (v1 + v2)) / 100);
+
+  let interval = setInterval(() => {
+    timing--;
+    return timing;
+  }, 1000);
+  clearInterval(interval);
+}
+
 function restartTimer(id, Values) {
   let totalSecond_Value = Number(totalSecond.value);
   let timerDiv = document.querySelector(id);
@@ -179,4 +215,52 @@ function restartTimer(id, Values) {
 function clearAllIntervals() {
   currentIntervals.forEach(clearInterval);
   currentIntervals = [];
+}
+
+function displayTime() {
+  let today = new Date();
+  let h = today.getHours();
+  let m = today.getMinutes();
+  let s = today.getSeconds();
+  m = checkTime(m);
+  s = checkTime(s);
+  document.getElementById("time").innerHTML = h + ":" + m + ":" + s;
+
+  return [today, h, m, s];
+}
+
+function checkTime(i) {
+  return i < 10 ? "0" + i : i;
+}
+
+let timingJSON = [
+  {
+    start: "14:44",
+    end: "14:45",
+  },
+];
+
+setInterval(() => {
+  let [today, h, m, s] = displayTime();
+  let currentTime = `${h}:${m}`;
+  checkTiming(currentTime);
+}, 1000);
+
+let running;
+function checkTiming(currentTime) {
+  for (const key of timingJSON) {
+    let current = currentTime.split(":");
+    let startingTime = key.start.split(":");
+    let endingTime = key.end.split(":");
+
+    let formattedStartTime = startingTime.map((d) => checkTime(d)).join(":");
+    let formattedEndTime = endingTime.map((d) => checkTime(d)).join(":");
+    running =
+      currentTime >= formattedStartTime && currentTime < formattedEndTime;
+    console.log(running);
+
+    document.getElementById("msg").innerHTML = running
+      ? "timer is running"
+      : "timer is stopped";
+  }
 }
