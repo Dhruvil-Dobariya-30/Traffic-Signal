@@ -5,6 +5,7 @@ let signal_3_Input = document.getElementById("signal-3");
 let signal_4_Input = document.getElementById("signal-4");
 
 let currentIntervals = [];
+let running;
 
 function changeSettings() {
   let totalSecond_Value = Number(totalSecond.value);
@@ -235,8 +236,12 @@ function checkTime(i) {
 
 let timingJSON = [
   {
-    start: "14:44",
-    end: "14:45",
+    start: "18:7",
+    end: "18:8",
+  },
+  {
+    start: "17:32",
+    end: "17:33",
   },
 ];
 
@@ -246,21 +251,74 @@ setInterval(() => {
   checkTiming(currentTime);
 }, 1000);
 
-let running;
+let times = [];
+times.push(timingJSON);
+let timeZone = times.flat();
+
+function manageUserInput() {
+  timingJSON.map((d) => {
+    d.start = d.start
+      .split(":")
+      .map((t) => checkTime(t))
+      .join(":");
+
+    d.end = d.end
+      .split(":")
+      .map((t) => checkTime(t))
+      .join(":");
+  });
+}
+manageUserInput();
+console.log(timeZone);
+
 function checkTiming(currentTime) {
+  let current = currentTime.split(":");
   for (const key of timingJSON) {
-    let current = currentTime.split(":");
     let startingTime = key.start.split(":");
     let endingTime = key.end.split(":");
 
     let formattedStartTime = startingTime.map((d) => checkTime(d)).join(":");
     let formattedEndTime = endingTime.map((d) => checkTime(d)).join(":");
-    running =
-      currentTime >= formattedStartTime && currentTime < formattedEndTime;
-    console.log(running);
 
-    document.getElementById("msg").innerHTML = running
-      ? "timer is running"
-      : "timer is stopped";
+    setInterval(() => {
+      for (let i = 0; i < timeZone.length; i++) {
+        if (timeZone[i].start <= currentTime && timeZone[i].end > currentTime) {
+          running = true;
+          document.getElementById("msg").innerHTML = "timer is running";
+        }
+      }
+    }, 1000);
+
+    setInterval(() => {
+      for (let i = 0; i < timeZone.length; i++) {
+        if (timeZone[i].end > currentTime && timeZone[i].start < currentTime) {
+          running = false;
+          document.getElementById("msg").innerHTML = "timer is stopped";
+          clearAllIntervals();
+        }
+      }
+    }, 1000);
+
+    if (!running) clearAllIntervals();
+    document.getElementById("msg").innerHTML = "timer is stopped";
+    // running =
+    //   currentTime >= formattedStartTime && currentTime < formattedEndTime;
   }
 }
+
+function checkWillStart() {
+  if (running) {
+    changeSettings();
+  } else {
+    alert("Signals Is Disabled");
+  }
+}
+
+// function stop() {
+//   for (let i = 0; i < timeZone.length; i++) {
+//     if (timeZone[i].end >= currentTime) {
+//       running = false;
+//       clearAllIntervals();
+//     }
+//   }
+// }

@@ -1,24 +1,10 @@
-const priorities = [
+[
   {
-    id: 0,
-    start: "08:35",
-    end: "08:40",
+    start: "16:10",
+    end: "16:11",
   },
   {
-    id: 1,
-    start: "08:35",
-    end: "08:40",
-  },
-  {
-    id: 3,
-    start: "08:35",
-    end: "08:40",
-  },
-  {
-    id: 4,
-    start: "08:35",
-    end: "08:40",
+    start: "16:12",
+    end: "16:13",
   },
 ];
-
-localStorage.setItem("priorities", JSON.stringify(priorities));
