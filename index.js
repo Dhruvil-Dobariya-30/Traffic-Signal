@@ -232,17 +232,30 @@ function displayTime() {
 }
 
 function checkTime(i) {
-  return i < 10 ? "0" + i : i;
+  return i < 10 ? ("0" + i).slice(-2) : i;
 }
+
+setInterval(() => {
+  let [today, h, m, s] = displayTime();
+  let currentTime = `${h}:${m}`
+    .split(":")
+    .map((t) => checkTime(t))
+    .join(":");
+  checkTiming(currentTime);
+}, 1000);
 
 let timingJSON = [
   {
-    start: "23:1",
-    end: "23:2",
+    start: "09:02",
+    end: "09:03",
   },
   {
-    start: "23:4",
-    end: "23:5",
+    start: "9:4",
+    end: "09:5",
+  },
+  {
+    start: "009:6",
+    end: "9:07",
   },
 ];
 
@@ -290,12 +303,6 @@ function checkTiming(currentTime) {
     document.getElementById("msg").innerHTML = "Timer is disabled.";
   }
 }
-
-setInterval(() => {
-  let [today, h, m, s] = displayTime();
-  let currentTime = `${h}:${m}:${s}`;
-  checkTiming(currentTime);
-}, 1000);
 
 let times = [];
 times.push(timingJSON);
