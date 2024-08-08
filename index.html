@@ -7,47 +7,73 @@
     <title>Traffic Signal</title>
   </head>
   <body>
-    <div id="time"></div>
-    <div id="msg"></div>
-
-    <div>
-      <input type="number" name="total time" id="totalSecond" required />
+    <div class="top-controls">
+      <div id="time"></div>
+      <div id="msg"></div>
     </div>
 
     <div class="controls">
-      <input
-        type="text"
-        id="signal-1"
-        class="signals"
-        value="25"
-        inputmode="numeric"
-        required
-      />
-      <input
-        type="text"
-        id="signal-2"
-        class="signals"
-        value="25"
-        inputmode="numeric"
-        required
-      />
-      <input
-        type="text"
-        id="signal-3"
-        class="signals"
-        value="25"
-        inputmode="numeric"
-        required
-      />
-      <input
-        type="text"
-        id="signal-4"
-        class="signals"
-        value="25"
-        inputmode="numeric"
-        required
-      />
-      <button onclick="changeSettings()">Change</button>
+      <div>
+        <label for="totalSecond">Total Seconds</label>
+        <input
+          type="text"
+          inputmode="numeric"
+          name="total time"
+          id="totalSecond"
+          value="60"
+          required
+        />
+      </div>
+      <div>
+        <label for="signal-1">Left</label>
+        <input
+          type="text"
+          id="signal-1"
+          class="signals"
+          value="25"
+          inputmode="numeric"
+          required
+        />
+      </div>
+
+      <div>
+        <label for="signal-2">Up</label>
+        <input
+          type="text"
+          id="signal-2"
+          class="signals"
+          value="25"
+          inputmode="numeric"
+          required
+        />
+      </div>
+
+      <div>
+        <label for="signal-3">Right</label>
+        <input
+          type="text"
+          id="signal-3"
+          class="signals"
+          value="25"
+          inputmode="numeric"
+          required
+        />
+      </div>
+      <div>
+        <label for="signal-4">Down</label>
+        <input
+          type="text"
+          id="signal-4"
+          class="signals"
+          value="25"
+          inputmode="numeric"
+          required
+        />
+      </div>
+      <div class="btns">
+        <button onclick="changeSettings()">Start</button>
+        <button onclick="reset()">Reset</button>
+      </div>
     </div>
 
     <div class="allSignals">

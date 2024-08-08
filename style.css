@@ -1,3 +1,5 @@
+@import url("https://fonts.googleapis.com/css2?family=Orbitron:wght@400..900&display=swap");
+
 * {
   margin: 0;
   padding: 0;
@@ -6,16 +8,93 @@
 
 body {
   width: 100vw;
+  height: 100vh;
   display: flex;
-  justify-content: center;
   align-items: center;
   flex-direction: column;
   font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  background: url("./bcg.jpg");
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  backdrop-filter: blur(4px);
+}
+
+.top-controls {
+  width: 100vw;
+  display: flex;
+  justify-content: space-around;
+  padding: 5px;
+  align-items: center;
+  background-color: #fffffe57;
+}
+
+#time {
+  font-family: "Orbitron", sans-serif;
+  font-size: 40px;
+  font-weight: bold;
+  letter-spacing: 1px;
+}
+
+#msg {
+  font-size: 25px;
+  padding: 5px 10px;
+  border-radius: 5px;
+  font-weight: bold;
+}
+
+.durations {
+  display: flex;
+  flex-direction: column;
 }
 
 .controls {
-  background-color: #f8f8f8;
+  width: 100vw;
+  background-color: #fffffe57;
   padding: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+}
+
+label {
+  font-size: 20px;
+}
+
+input {
+  margin-left: 5px;
+  border: none;
+  padding: 6px 10px;
+  font-size: 16px;
+  width: 70px;
+  border-radius: 10px;
+  background-color: #ffffff40;
+  color: white;
+  font-weight: bold;
+}
+
+button {
+  padding: 6px 10px;
+  border: none;
+  border-radius: 5px;
+  font-size: 16px;
+  font-weight: bold;
+  background-color: #00c10f61;
+  margin-left: 5px;
+}
+
+button:hover {
+  cursor: pointer;
+  background-color: #00c10f;
+  transition: all 0.2s;
+}
+
+.word {
+  color: #00c10f;
+}
+
+.word-red {
+  color: #930000;
 }
 
 .allSignals {
@@ -34,18 +113,30 @@ body {
   justify-content: center;
   align-items: center;
   gap: 20px;
+  border-radius: 10px;
+}
+
+.signal1,
+.signal2,
+.signal3,
+.signal4 {
+  box-shadow: #eeebeb59 0px 5px 15px;
 }
 
 .allSignals .timer1,
 .allSignals .timer2,
 .allSignals .timer3,
 .allSignals .timer4 {
-  color: green;
-  background-color: white;
+  font-family: "Orbitron", sans-serif;
+  color: red;
+  background-color: #e1e1e1;
   width: 80px;
   height: 80px;
-  font-size: 30px;
+  font-size: 40px;
   font-weight: 900;
+  letter-spacing: 2px;
+  box-shadow: 0px 0px 10px 2px rgb(212, 212, 212);
+  border-radius: 10px;
 }
 
 .allSignals .redLight {
@@ -71,13 +162,12 @@ body {
   color: white;
   font-size: 25px;
   font-weight: 600;
-  padding: 3px 0 0px 0;
+  padding: 10px;
 }
 
 .green {
   background: #0e990e !important;
   box-shadow: 15px 14px 150px 20px #12b612cc;
-  /* animation: Blink 1s linear infinite; */
 }
 
 .red {

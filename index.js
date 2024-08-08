@@ -7,10 +7,17 @@ let signal_4_Input = document.getElementById("signal-4");
 let currentIntervals = [];
 let running = false;
 let timerReady = false;
+let timingJSON = [];
+
+async function fetchData() {
+  let data = await fetch("./data.json");
+  data = await data.json();
+  return data;
+}
 
 function changeSettings() {
   if (!timerReady) {
-    alert("Signals are disabled.");
+    alert("Signals Are Disabled.");
     return;
   }
 
@@ -43,7 +50,9 @@ function changeSettings() {
         signal_4_Value
       );
       running = true;
-      document.getElementById("msg").innerHTML = "Timer is running";
+      document.getElementById(
+        "msg"
+      ).innerHTML = `Signals Are <span class="word">Running...</span>`;
     }
   }
 }
@@ -56,20 +65,33 @@ function startTimer(value1, value2, value3, value4) {
   let totalSec = totalSecond.value;
 
   document
-    .querySelectorAll(".yellowLight")
-    .forEach((data) => data.classList.remove("yellow"));
-  document
     .querySelectorAll(".redLight")
     .forEach((data) => data.classList.add("red"));
+  document
+    .querySelectorAll(".yellowLight")
+    .forEach((data) => data.classList.remove("yellow"));
+  document.querySelectorAll(".greenLight").forEach((light) => {
+    light.classList.remove("green");
+  });
+
+  updateTimerColor(2, "red");
+  updateTimerColor(3, "red");
+  updateTimerColor(4, "red");
+
+  document
+    .querySelectorAll(".timer1, .timer2, .timer3, .timer4")
+    .forEach((timer) => {
+      timer.innerHTML = "0";
+    });
 
   function signal_1_Timer() {
     let timerDiv = document.querySelector(".timer1");
     let secondDiv = document.querySelector(".timer2");
     let thirdDiv = document.querySelector(".timer3");
     let fourthDiv = document.querySelector(".timer4");
-    let timing = Math.round((totalSec * value1) / 100);
-    let timing3 = Math.round((totalSec * (value1 + value2)) / 100) + 1;
-    let timing4 = Math.round((totalSec * (value1 + value2 + value3)) / 100) + 2;
+    let timing = Math.ceil((totalSec * value1) / 100);
+    let timing3 = Math.ceil((totalSec * (value1 + value2)) / 100) + 1;
+    let timing4 = Math.ceil((totalSec * (value1 + value2 + value3)) / 100) + 1;
 
     timerDiv.innerHTML = timing;
     document.getElementById("greenLight1").classList.add("green");
@@ -116,7 +138,7 @@ function startTimer(value1, value2, value3, value4) {
   function signal_2_Timer() {
     let timerDiv = document.querySelector(".timer2");
 
-    let timing = Math.round((totalSec * value2) / 100);
+    let timing = Math.floor((totalSec * value2) / 100);
 
     timerDiv.innerHTML = timing;
     document.getElementById("greenLight2").classList.add("green");
@@ -142,7 +164,7 @@ function startTimer(value1, value2, value3, value4) {
 
   function signal_3_Timer() {
     let timerDiv = document.querySelector(".timer3");
-    let timing = Math.round((totalSec * value3) / 100);
+    let timing = Math.floor((totalSec * value3) / 100);
 
     timerDiv.innerHTML = timing;
     document.getElementById("greenLight3").classList.add("green");
@@ -169,7 +191,7 @@ function startTimer(value1, value2, value3, value4) {
 
   function signal_4_Timer() {
     let timerDiv = document.querySelector(".timer4");
-    let timing = Math.round((totalSec * value4) / 100);
+    let timing = Math.ceil((totalSec * value4) / 100);
 
     timerDiv.innerHTML = timing;
     document.getElementById("greenLight4").classList.add("green");
@@ -200,7 +222,7 @@ function startTimer(value1, value2, value3, value4) {
 function restartTimer(id, Values) {
   let totalSecond_Value = Number(totalSecond.value);
   let timerDiv = document.querySelector(id);
-  let count = Math.round((totalSecond_Value * Values) / 100) + 2;
+  let count = Math.round((totalSecond_Value * Values) / 100) + 1;
 
   let interval = setInterval(() => {
     if (count === 0) {
@@ -226,9 +248,11 @@ function displayTime() {
   let s = today.getSeconds();
   m = checkTime(m);
   s = checkTime(s);
-  document.getElementById("time").innerHTML = h + ":" + m + ":" + s;
+  document.getElementById(
+    "time"
+  ).innerHTML = `${h}:${m}:<span class="word">${s}</span>`;
 
-  return [today, h, m, s];
+  return [h, m, s];
 }
 
 function checkTime(i) {
@@ -236,7 +260,7 @@ function checkTime(i) {
 }
 
 setInterval(() => {
-  let [today, h, m, s] = displayTime();
+  let [h, m, s] = displayTime();
   let currentTime = `${h}:${m}`
     .split(":")
     .map((t) => checkTime(t))
@@ -244,20 +268,20 @@ setInterval(() => {
   checkTiming(currentTime);
 }, 1000);
 
-let timingJSON = [
-  {
-    start: "09:02",
-    end: "09:03",
-  },
-  {
-    start: "9:4",
-    end: "09:5",
-  },
-  {
-    start: "009:6",
-    end: "9:07",
-  },
-];
+function manageUserInput(arr) {
+  arr.map((d) => {
+    d.start = d.start
+      .split(":")
+      .map((t) => checkTime(t))
+      .join(":");
+
+    d.end = d.end
+      .split(":")
+      .map((t) => checkTime(t))
+      .join(":");
+  });
+  return arr;
+}
 
 function resetSignals() {
   document
@@ -273,57 +297,47 @@ function resetSignals() {
   document.querySelectorAll(".yellowLight").forEach((light) => {
     light.classList.add("yellow");
   });
-
   clearAllIntervals();
-
   running = false;
   timerReady = false;
 }
 
-function checkTiming(currentTime) {
+async function checkTiming(currentTime) {
+  let data = await fetchData();
+  timingJSON = manageUserInput(data);
+
   let isWithinTimeSlot = false;
 
-  for (const timeSlot of timingJSON) {
+  // for (const timeSlot of timingJSON) {
+  timingJSON.some((timeSlot) => {
     if (currentTime >= timeSlot.start && currentTime < timeSlot.end) {
       isWithinTimeSlot = true;
       if (!timerReady) {
         timerReady = true;
-        document.getElementById("msg").innerHTML =
-          "Timer ready. Press Change to start.";
+        document.getElementById(
+          "msg"
+        ).innerHTML = `Signals Are Ready To <span class="word">Start</span>`;
       }
     } else if (currentTime === timeSlot.end) {
       resetSignals();
     }
-  }
+  });
 
   if (!isWithinTimeSlot) {
     if (running || timerReady) {
       resetSignals();
     }
-    document.getElementById("msg").innerHTML = "Timer is disabled.";
+    document.getElementById(
+      "msg"
+    ).innerHTML = `Signals Are <span class="word-red">Disabled</span>`;
   }
 }
 
-let times = [];
-times.push(timingJSON);
-let timeZone = times.flat();
-
-function manageUserInput() {
-  timingJSON.map((d) => {
-    d.start = d.start
-      .split(":")
-      .map((t) => checkTime(t))
-      .join(":");
-
-    d.end = d.end
-      .split(":")
-      .map((t) => checkTime(t))
-      .join(":");
-  });
-}
-manageUserInput();
-
 document.addEventListener("DOMContentLoaded", () => {
   resetSignals();
-  document.getElementById("msg").innerHTML = "Timer is disabled.";
+  document.getElementById("msg").innerHTML = "Signals Are Disabled.";
 });
+
+function reset() {
+  location.reload();
+}
