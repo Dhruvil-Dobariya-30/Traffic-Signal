@@ -269,18 +269,10 @@ setInterval(() => {
 }, 1000);
 
 function manageUserInput(arr) {
-  arr.map((d) => {
-    d.start = d.start
-      .split(":")
-      .map((t) => checkTime(t))
-      .join(":");
-
-    d.end = d.end
-      .split(":")
-      .map((t) => checkTime(t))
-      .join(":");
-  });
-  return arr;
+  return arr.map((d) => ({
+    start: d.start.split(":").map(checkTime).join(":"),
+    end: d.end.split(":").map(checkTime).join(":"),
+  }));
 }
 
 function resetSignals() {
@@ -307,9 +299,9 @@ async function checkTiming(currentTime) {
   timingJSON = manageUserInput(data);
 
   let isWithinTimeSlot = false;
+  let isFirstTimeSlot = true;
 
-  // for (const timeSlot of timingJSON) {
-  timingJSON.some((timeSlot) => {
+  for (const timeSlot of timingJSON) {
     if (currentTime >= timeSlot.start && currentTime < timeSlot.end) {
       isWithinTimeSlot = true;
       if (!timerReady) {
@@ -318,10 +310,11 @@ async function checkTiming(currentTime) {
           "msg"
         ).innerHTML = `Signals Are Ready To <span class="word">Start</span>`;
       }
-    } else if (currentTime === timeSlot.end) {
+    } else if (currentTime === timeSlot.end && !isFirstTimeSlot) {
       resetSignals();
     }
-  });
+    isFirstTimeSlot = false;
+  }
 
   if (!isWithinTimeSlot) {
     if (running || timerReady) {
