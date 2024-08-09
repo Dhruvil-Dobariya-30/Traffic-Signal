@@ -9,6 +9,7 @@ let running = false;
 let timerReady = false;
 let timingJSON = [];
 
+// SIGNAL WILL START DURING JSON TIME
 async function fetchData() {
   let data = await fetch("./data.json");
   data = await data.json();
@@ -50,9 +51,7 @@ function changeSettings() {
         signal_4_Value
       );
       running = true;
-      document.getElementById(
-        "msg"
-      ).innerHTML = `Signals Are <span class="word">Running...</span>`;
+      updateMessage();
     }
   }
 }
@@ -131,15 +130,12 @@ function startTimer(value1, value2, value3, value4) {
         fourthDiv.innerHTML = timing4;
       }
     }, 1000);
-
     currentIntervals.push(interval1, thirdInterval, fourthInterval);
   }
 
   function signal_2_Timer() {
     let timerDiv = document.querySelector(".timer2");
-
     let timing = Math.floor((totalSec * value2) / 100);
-
     timerDiv.innerHTML = timing;
     document.getElementById("greenLight2").classList.add("green");
     document.getElementById("redLight2").classList.remove("red");
@@ -185,7 +181,6 @@ function startTimer(value1, value2, value3, value4) {
         timerDiv.innerHTML = timing;
       }
     }, 1000);
-
     currentIntervals.push(interval);
   }
 
@@ -212,10 +207,8 @@ function startTimer(value1, value2, value3, value4) {
         timerDiv.innerHTML = timing;
       }
     }, 1000);
-
     currentIntervals.push(interval);
   }
-
   signal_1_Timer();
 }
 
@@ -232,7 +225,6 @@ function restartTimer(id, Values) {
       timerDiv.innerHTML = count;
     }
   }, 1000);
-
   currentIntervals.push(interval);
 }
 
@@ -281,53 +273,57 @@ function resetSignals() {
     .forEach((timer) => {
       timer.innerHTML = "0";
     });
-
   document.querySelectorAll(".redLight, .greenLight").forEach((light) => {
     light.classList.remove("red", "green");
   });
-
   document.querySelectorAll(".yellowLight").forEach((light) => {
     light.classList.add("yellow");
   });
   clearAllIntervals();
   running = false;
   timerReady = false;
+  updateMessage();
 }
 
 async function checkTiming(currentTime) {
   let data = await fetchData();
   timingJSON = manageUserInput(data);
-
   let isWithinTimeSlot = false;
-
   for (const timeSlot of timingJSON) {
     if (currentTime >= timeSlot.start && currentTime < timeSlot.end) {
       isWithinTimeSlot = true;
       if (!timerReady) {
         timerReady = true;
-        document.getElementById(
-          "msg"
-        ).innerHTML = `Signals Are Ready To <span class="word">Start</span>`;
+        updateMessage();
       }
     } else if (currentTime === timeSlot.end) {
       resetSignals();
     }
+    updateMessage();
   }
-
   if (!isWithinTimeSlot) {
     if (running || timerReady) {
       resetSignals();
     }
-    document.getElementById(
-      "msg"
-    ).innerHTML = `Signals Are <span class="word-red">Disabled</span>`;
+    updateMessage();
   }
 }
 
-// document.addEventListener("DOMContentLoaded", () => {
-//   resetSignals();
-//   document.getElementById("msg").innerHTML = "Signals Are Disabled.";
-// });
+function updateMessage() {
+  if (running) {
+    document.getElementById(
+      "msg"
+    ).innerHTML = `Signals Are <span class="word">Running...</span>`;
+  } else if (!timerReady) {
+    document.getElementById(
+      "msg"
+    ).innerHTML = `Signals Are <span class="word-red">Disabled</span>`;
+  } else {
+    document.getElementById(
+      "msg"
+    ).innerHTML = `Signals Are Ready To <span class="word">Start</span>`;
+  }
+}
 
 function reset() {
   location.reload();
