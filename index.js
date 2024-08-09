@@ -299,7 +299,6 @@ async function checkTiming(currentTime) {
   timingJSON = manageUserInput(data);
 
   let isWithinTimeSlot = false;
-  let isFirstTimeSlot = true;
 
   for (const timeSlot of timingJSON) {
     if (currentTime >= timeSlot.start && currentTime < timeSlot.end) {
@@ -310,10 +309,9 @@ async function checkTiming(currentTime) {
           "msg"
         ).innerHTML = `Signals Are Ready To <span class="word">Start</span>`;
       }
-    } else if (currentTime === timeSlot.end && !isFirstTimeSlot) {
+    } else if (currentTime === timeSlot.end) {
       resetSignals();
     }
-    isFirstTimeSlot = false;
   }
 
   if (!isWithinTimeSlot) {
@@ -326,10 +324,10 @@ async function checkTiming(currentTime) {
   }
 }
 
-document.addEventListener("DOMContentLoaded", () => {
-  resetSignals();
-  document.getElementById("msg").innerHTML = "Signals Are Disabled.";
-});
+// document.addEventListener("DOMContentLoaded", () => {
+//   resetSignals();
+//   document.getElementById("msg").innerHTML = "Signals Are Disabled.";
+// });
 
 function reset() {
   location.reload();
